@@ -8,6 +8,14 @@ static struct proc_dir_entry *entry;
 
 static int proc_count(struct seq_file *m, void *v){
 	// TODO: it's all yours
+	struct task_struck *task;
+	int count = 0;
+	for_each_process(task){
+		count++;
+	}
+
+	
+	seq_printf(m, "%d\n",count);
 	return 0;
 }
 
@@ -15,6 +23,11 @@ static int __init proc_count_init(void)
 {
 	entry = proc_create_single("count", 0, NULL, proc_count);
 	pr_info("proc_count: init\n");
+	if(!entry){
+		pr_err("Failed to create the file /proc/count \n");
+		return -ENOMEN;
+	}
+	pr_info("pric_count: init\n");
 	return 0;
 }
 
